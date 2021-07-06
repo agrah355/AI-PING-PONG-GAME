@@ -1,0 +1,15 @@
+body{
+    text-align: center;
+}
+.heading{
+    width: 100%;
+    text-align: left;
+}
+.header{
+    font-size: 25px;
+    display: inline;
+}
+.intruction{
+    float: right;
+    border: 2px solid white;
+}
