@@ -1,15 +1,42 @@
-body{
-    text-align: center;
-}
-.heading{
+.header {
     width: 100%;
     text-align: left;
 }
-.header{
+
+.header h4 {
     font-size: 25px;
     display: inline;
 }
-.intruction{
-    float: right;
+
+.instruction {
     border: 2px solid white;
+    float: right;
+}
+
+#status,
+#start {
+    font-size: 18px;
+    color: white;
+}
+
+.modal-dialog {
+    width: 90%;
+}
+
+.credit {
+    position: fixed;
+    bottom: 0;
+    line-height: 2;
+    background-color: grey;
+    color: white;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 0;
+}
+body{
+    text-align: center;
+}
+canvas{
+    border-radius: 10px;
+    border: 5px solid white;
 }
