@@ -24,33 +24,50 @@ var ball = {
   dy: 3
 }
 
+rightWristX=0;
+rightWristY=0;
+scoreRightWrist=0;
+game_status="";
+
+function preload(){
+  ball_touch_paddel=loadSound("ball_touch_paddel.wav");
+  missed=loadSound("missed.wav");
+}
+
 function setup() {
-  canvas = createCanvas(700, 400);
+  canvas = createCanvas(700, 600);
   canvas.parent('canvas');
 
   video = createCapture(VIDEO);
   video.size(700, 600);
-  video.parent(canvas);
+  video.hide();
 
   poseNet = ml5.poseNet(video, modelLoaded);
   poseNet.on('pose', gotPoses)
 }
 
 function modelLoaded() {
-  console.log('mosel is loaded');
+  console.log('model is loaded');
 }
 
 function gotPoses(results) {
   if (results.length > 0) {
     console.log(results);
-    leftWristY = results[0].pose.leftWrist.y;
-    console.log("Left Wrist y is = " + leftWristY);
+    rightWristY = results[0].pose.rightWrist.y;
+    console.log("Right Wrist y is = " + rightWristY);
+
+    rightWristX = results[0].pose.rightWrist.x;
+    console.log("Right Wrist x is = " + rightWristX);
+
+    scoreRightWrist=results[0].pose.keypoints[10].score;
   }
 }
 
 function draw() {
+  if(game_status=="start"){
 
   background(0);
+  image(video,0,0,700,600);
 
   fill("black");
   stroke("black");
@@ -60,6 +77,12 @@ function draw() {
   stroke("black");
   rect(0, 0, 20, 700);
 
+  if(scoreRightWrist>0.2){
+    fill("red");
+    stroke("red");
+    circle(rightWristX,rightWristY,30)
+  }
+
   //funtion paddleInCanvas call 
   paddleInCanvas();
 
@@ -67,7 +90,7 @@ function draw() {
   fill(250, 0, 0);
   stroke(0, 0, 250);
   strokeWeight(0.5);
-  paddle1Y = mouseY;
+  paddle1Y = rightWristY;
   rect(paddle1X, paddle1Y, paddle1, paddle1Height, 100);
 
 
@@ -88,6 +111,7 @@ function draw() {
 
   //function move call which in very important
   move();
+ }
 }
 
 
@@ -175,6 +199,7 @@ function models() {
 }
 
 function start() {
+  game_status="start";
   document.getElementById("status").innerHTML = "Game is loading";
 }
 
@@ -186,4 +211,10 @@ function paddleInCanvas() {
   if (mouseY < 0) {
     mouseY = 0;
   }
+}
+
+function restart(){
+  loop();
+  pcscore=0;
+  playerscore=0;
 }
